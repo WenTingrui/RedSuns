@@ -66,7 +66,9 @@ int main(void)
 		
 		//以下防止急弯判断反了
 		if(left>700&&uin3>uin1)left=1000-left;
-		else if(left<300&&uin1>uin3)left=1000-left;	
+		else if(left<300&&uin1>uin3)left=1000-left;
+
+			left=500;
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
 		if(left<0)turnleft(0);
@@ -78,10 +80,11 @@ int main(void)
 		et_1=et;
 		et=jianju-DISTANCE ;
 		//sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
-		sudu=KP*et;
+		sudu=et*5;
 		if(sudu>800.0)sudu=800;
 		else if(sudu<50.0)sudu=50;
 		umotor((u32)sudu);
+
 
 	}	 
  }
