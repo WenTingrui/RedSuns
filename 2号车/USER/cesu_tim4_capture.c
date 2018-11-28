@@ -61,7 +61,7 @@ void TIM4_IRQHandler(void)
 		{	    	
 				if(overflow==100)//如果已经溢出50次，即0.5s未检测到捕获
 				{
-					interval=overflow*500;
+					interval=overflow*50000;
 					overflow=0;			//清空
 					TIM_SetCounter(TIM4,0); 
 				}
@@ -74,7 +74,7 @@ void TIM4_IRQHandler(void)
 		{	
 			if(buhuo==4)
 			{
-			interval=interval_buffer+overflow*500+TIM_GetCapture1(TIM4);
+			interval=interval_buffer+overflow*50000+TIM_GetCapture1(TIM4);
 				overflow=0;			//清空
 				buhuo=0;
 				interval_buffer =0;
@@ -83,7 +83,7 @@ void TIM4_IRQHandler(void)
 			else
 			{
 				buhuo++;
-				interval_buffer+=overflow*500+TIM_GetCapture1(TIM4);
+				interval_buffer+=overflow*50000+TIM_GetCapture1(TIM4);
 				overflow=0;			//清空
 	 			TIM_SetCounter(TIM4,0); 
 			}

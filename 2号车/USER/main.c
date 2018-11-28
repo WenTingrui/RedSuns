@@ -9,8 +9,8 @@
 #include "cesu_tim4_capture.h"
 #include "csb_ceju_uart.h"
 
-#define DISTANCE 200
-#define KP 0.001
+#define DISTANCE 300
+#define KP 0.5
 #define KI 0.00
 #define KD -0.0
 #define exp 2.718281828
@@ -43,7 +43,7 @@ int main(void)
 	uart_csb_init();
  	TIM3_PWM_Init(199,72-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
-	  TIM4_Cap_Init(500,720/5-1);	//以500khz即0.002ms的频率计数 ，一次计500下
+	  TIM4_Cap_Init(50000,720/5-1);	//以500khz即0.002ms的频率计数 ，一次计500下
 		
 	 sudu=100;interval=0;
 	 umotor(sudu);
@@ -80,7 +80,8 @@ int main(void)
 		et_1=et;
 		et=jianju-DISTANCE ;
 		//sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
-		sudu=et*5;
+		//sudu=jianju;
+		sudu=KP*et+200;
 		if(sudu>800.0)sudu=800;
 		else if(sudu<50.0)sudu=50;
 		umotor((u32)sudu);

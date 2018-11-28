@@ -88,7 +88,7 @@ u16 get_jianju()
 		for(j=0;j<1000;j++)
 		{
 			if(min>jiange_mm)min=jiange_mm ;
-			delay_us (10);
+			delay_us (100);
 		}
 		return(min);
 	}
