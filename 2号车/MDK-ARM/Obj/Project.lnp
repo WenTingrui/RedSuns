@@ -6,6 +6,7 @@
 ".\obj\diancixunji_adc.o"
 ".\obj\dianji_tim3_pwm.o"
 ".\obj\duoji_tim2_pwm.o"
+".\obj\timer.o"
 ".\obj\misc.o"
 ".\obj\stm32f10x_flash.o"
 ".\obj\stm32f10x_gpio.o"

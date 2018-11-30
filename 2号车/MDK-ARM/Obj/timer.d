@@ -1,5 +1,5 @@
-.\obj\timer.o: ..\HARDWARE\TIMER\timer.c
-.\obj\timer.o: ..\HARDWARE\TIMER\timer.h
+.\obj\timer.o: ..\USER\timer.c
+.\obj\timer.o: ..\USER\timer.h
 .\obj\timer.o: ..\SYSTEM\sys\sys.h
 .\obj\timer.o: ..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h
 .\obj\timer.o: ..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h
@@ -30,5 +30,6 @@
 .\obj\timer.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h
 .\obj\timer.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\obj\timer.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h
-.\obj\timer.o: ..\SYSTEM\usart\usart.h
+.\obj\timer.o: ..\USER\csb_ceju_uart.h
 .\obj\timer.o: F:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\obj\timer.o: ..\USER\dianji_tim3_pwm.h

@@ -448,6 +448,11 @@
               <FileType>1</FileType>
               <FilePath>..\USER\duoji_tim2_pwm.c</FilePath>
             </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

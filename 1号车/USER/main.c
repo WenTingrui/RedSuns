@@ -8,20 +8,14 @@
 #include "duoji_tim2_pwm.h"
 #include "cesu_tim4_capture.h"
 #include "csb_ceju_uart.h"
+#include "timer.h"
 
-#define INTERVAL 5000 //编码器转一圈花时500*0.002ms*100=100ms
-#define KP 0.0001
-#define KI 0.00
-#define KD -0.0
 #define exp 2.718281828
 
-extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
 int main(void)
  {	
 	u8 i;
-	 u16 uin4,uin5,jianju;
-	  int et,et_1,et_2;
-	 float sudu;//速度大小取值0~1000
+	 u16 uin4,uin5;
 	 float uin1,uin2,uin3,y,left,
 		 W1[5][3]={0.478289401668822,	0.699036628214231,	-2.01353668108713,
 -2.63529565936215,	-1.32552713172024,	2.18329808018675,
@@ -44,12 +38,8 @@ int main(void)
  	TIM3_PWM_Init(199,72-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
 	  TIM4_Cap_Init(500,720/5-1);	//以500khz即0.002ms的频率计数 ，一次计500下
+	TIM1_Int_Init(9,719);//100Khz的计数频率，计数到10为0.1ms  
 		
-	 sudu=100;interval=0;
-	 umotor(sudu);
-	 et=10;et_1=10;left=500;
-	 turnleft((u16)left);
-	 delay_ms (500);
    	while(1)
 	{			
 		uin1=(float)(Get_Adc_Average(ADC_Channel_0,3)/1000.0);
@@ -65,8 +55,8 @@ int main(void)
 		left=y*500/200.0+500;
 		
 		//以下防止急弯判断反了
-		if(left>700&&uin3>uin1)left=1000-left;
-		else if(left<300&&uin1>uin3)left=1000-left;	
+		if(uin3<0.1)left=1000;
+		else if(uin1<0.1)left=0;	
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
 		if(left<0)turnleft(0);
@@ -74,19 +64,6 @@ int main(void)
 		else turnleft((u16)left);
 		
 		
-		jianju=get_jianju();
-		et_2=jianju;
-		
-		
-		
-		et_2=et_1;
-		et_1=et;
-		et=interval-INTERVAL ;
-		sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
-		if(sudu>800.0)sudu=800;
-		else if(sudu<50.0)sudu=50;
-		umotor((u32)sudu);
-
 	}	 
  }
 
