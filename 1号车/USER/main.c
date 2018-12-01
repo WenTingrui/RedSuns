@@ -56,7 +56,7 @@ int main(void)
 		
 		//以下防止急弯判断反了
 		if(uin3<0.1)left=1000;
-		else if(uin1<0.1)left=0;	
+		if(uin1<0.1)left=0;	
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
 		if(left<0)turnleft(0);
