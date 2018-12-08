@@ -38,7 +38,7 @@ int main(void)
  	TIM3_PWM_Init(199,72-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
 	  TIM4_Cap_Init(500,720/5-1);	//以500khz即0.002ms的频率计数 ，一次计500下
-	TIM1_Int_Init(9,719);//100Khz的计数频率，计数到10为0.1ms  
+	TIM1_Int_Init(49,71);//100Khz的计数频率，计数到10为0.1ms  
 		
    	while(1)
 	{			
@@ -55,8 +55,8 @@ int main(void)
 		left=y*500/200.0+500;
 		
 		//以下防止急弯判断反了
-		if(uin3<0.1)left=1000;
-		if(uin1<0.1)left=0;	
+		if(uin1<0.1)left=0;	if(uin3<0.1)left=1000;
+		
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
 		if(left<0)turnleft(0);

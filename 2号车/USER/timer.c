@@ -25,7 +25,7 @@ void TIM1_UP_IRQHandler(void)   //TIM3ÖĞ¶Ï
 		sudu=KP*et+200;
 		if(sudu>180.0)sudu=180;
 		else if(sudu<150.0)sudu=150;
-		umotor((u32)sudu);
+		umotor((u32)92);
 		}
 }
 
