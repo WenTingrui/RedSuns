@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Obj\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Obj\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Dec 07 18:35:26 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Sat Jan 19 18:01:02 2019
 <BR><P>
 <H3>Maximum Stack Usage =        424 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -442,7 +442,7 @@ Global Symbols
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a5]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text))
+<P><STRONG><a name="[a4]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, cfrcmple.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -716,7 +716,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[23]"></a>TIM1_UP_IRQHandler</STRONG> (Thumb, 174 bytes, Stack size 40 bytes, timer.o(i.TIM1_UP_IRQHandler))
+<P><STRONG><a name="[23]"></a>TIM1_UP_IRQHandler</STRONG> (Thumb, 176 bytes, Stack size 40 bytes, timer.o(i.TIM1_UP_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = TIM1_UP_IRQHandler &rArr; umotor &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
@@ -863,7 +863,7 @@ Global Symbols
 
 <P><STRONG><a name="[aa]"></a>TIM_SetCompare2</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_SetCompare2))
 <BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;umotor
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnleft
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnleft
 </UL>
 
 <P><STRONG><a name="[88]"></a>TIM_SetCounter</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f10x_tim.o(i.TIM_SetCounter))
@@ -1008,11 +1008,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Adc_Average
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 830 bytes, Stack size 200 bytes, main.o(i.main))
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 886 bytes, Stack size 200 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 424<LI>Call Chain = main &rArr; pow &rArr; __kernel_poly &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_csb_init
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnleft
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnleft
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1024,7 +1024,7 @@ Global Symbols
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfcmple
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM4_Cap_Init
@@ -1071,7 +1071,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pow
 </UL>
 
-<P><STRONG><a name="[a4]"></a>turnleft</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, duoji_tim2_pwm.o(i.turnleft))
+<P><STRONG><a name="[a5]"></a>turnleft</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, duoji_tim2_pwm.o(i.turnleft))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = turnleft
 </UL>
 <BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_SetCompare2

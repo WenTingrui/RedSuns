@@ -9,7 +9,7 @@ void turnright(u16 grade)
 
 void turnleft(u16 grade)
 {
-	TIM_SetCompare2(TIM2,2000-grade);
+	TIM_SetCompare2(TIM2,2050-grade);
 }
 
 

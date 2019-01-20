@@ -22,10 +22,11 @@ void TIM1_UP_IRQHandler(void)   //TIM3ÖĞ¶Ï
 		et=jianju-DISTANCE ;
 		//sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
 		//sudu=jianju;
-		sudu=KP*et+200;
-		if(sudu>180.0)sudu=180;
-		else if(sudu<150.0)sudu=150;
-		umotor((u32)92);
+		sudu=KP*et+90;
+		if(sudu>105)sudu=105;
+		else if(sudu<30)sudu=30;
+			if(jianju==3440)sudu=110;
+		umotor((u32)sudu);
 		}
 }
 
