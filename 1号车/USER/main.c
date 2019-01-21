@@ -38,7 +38,7 @@ int main(void)
  	TIM3_PWM_Init(199,72-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
 	  TIM4_Cap_Init(50000,9-1);	//以500khz即0.002ms的频率计数 ，一次计500下
-	TIM1_Int_Init(100-1,7200-1);//100Khz的计数频率，计数到10为0.1ms  
+	TIM1_Int_Init(100-1,3840-1);//100Khz的计数频率，计数到10为0.1ms  
 		
    	while(1)
 	{			

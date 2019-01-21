@@ -51,6 +51,7 @@ void TIM4_Cap_Init(u16 arr,u16 psc)
 }
    				
 u32 interval=0; 
+u32 weiyi=0;
 //定时器4中断服务程序	 
 void TIM4_IRQHandler(void)
 { 
@@ -63,6 +64,8 @@ void TIM4_IRQHandler(void)
 		{	
 			interval=TIM_GetCapture1(TIM4);
 				TIM_SetCounter(TIM4,0); 
+			weiyi++;
+			if(weiyi==1000000000)weiyi=0;
 		}			     	    					   
  
     TIM_ClearITPendingBit(TIM4, TIM_IT_CC1|TIM_IT_Update); //清除中断标志位

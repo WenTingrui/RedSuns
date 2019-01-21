@@ -5,13 +5,14 @@
 
 #define INTERVAL 2000 //编码器转一圈花时500*0.002ms*100=100ms
 #define KP 0.01
-#define KI 0.00
-#define KD -0.0
+#define KI 0.1     //  T/Ti
+#define KD 0       //  Td/T
 
 extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
+extern u32 weiyi;
 int et=10,et_1=10,et_2=10;
 float sudu=110;//速度大小取值0~1000
-u16 countfa=0;
+
 //定时器1中断服务程序
 void TIM1_UP_IRQHandler(void)   //TIM1中断
 {
@@ -21,17 +22,19 @@ void TIM1_UP_IRQHandler(void)   //TIM1中断
 		et_2=et_1;
 		et_1=et;
 		et=interval-INTERVAL ;
-		sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
-		if(sudu>100.0)sudu=100;
+		sudu=sudu+KP*((1+KI+KD)*et-(1+2*KD)*et_1+KD*et_2);
+		if(sudu>200.0)sudu=200;
 		else if(sudu<0)sudu=0;
 		umotor((u32)sudu);
 			
-			countfa ++;
-			if(countfa ==1)
-			{
+			//每多发一个都要降低TIM1中断周期
+				fasong(weiyi );
+				USART_SendData(USART1,32);//发空格
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+			
 				fasong(interval );
-				countfa =0;
-			}
+				USART_SendData(USART1,59);//发分号
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 		}
 }
 
