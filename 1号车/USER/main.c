@@ -37,8 +37,8 @@ int main(void)
 	uart_csb_init();
  	TIM3_PWM_Init(199,72-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
-	  TIM4_Cap_Init(500,720/5-1);	//以500khz即0.002ms的频率计数 ，一次计500下
-	TIM1_Int_Init(49,71);//100Khz的计数频率，计数到10为0.1ms  
+	  TIM4_Cap_Init(50000,9-1);	//以500khz即0.002ms的频率计数 ，一次计500下
+	TIM1_Int_Init(100-1,7200-1);//100Khz的计数频率，计数到10为0.1ms  
 		
    	while(1)
 	{			
@@ -58,7 +58,7 @@ int main(void)
 		if(uin1<0.1)left=0;	if(uin3<0.1)left=1050;
 		if(uin1<0.1&&uin3<0.1)
 		{
-			if(uin1>uin3)left=1050;
+			if(uin4>uin5)left=1050;
 			else left=0;
 		}
 		

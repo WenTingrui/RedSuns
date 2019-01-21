@@ -32,3 +32,5 @@
 .\obj\timer.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\obj\timer.o: ..\USER\cesu_tim4_capture.h
 .\obj\timer.o: ..\USER\dianji_tim3_pwm.h
+.\obj\timer.o: ..\USER\csb_ceju_uart.h
+.\obj\timer.o: F:\keil5\ARM\ARMCC\Bin\..\include\stdio.h

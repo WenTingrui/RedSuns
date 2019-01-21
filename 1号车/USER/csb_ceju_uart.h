@@ -9,6 +9,7 @@
     		
 void uart_csb_init(void);
 u16 get_jianju(void);
+void fasong(u32 data);
 #endif
 
 

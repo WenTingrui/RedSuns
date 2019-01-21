@@ -8,9 +8,9 @@
 #endif
 
  
-//串口1中断服务程序
 //注意,读取USARTx->SR能避免莫名其妙的错误   	
 u8 USART_RX_BUF[USART_REC_LEN];     //接收缓冲,最大USART_REC_LEN个字节.
+u16 USART_TX_BUF[10]; 
 u8 approve=0;
 u8 i;
 u8 len=0;
@@ -25,7 +25,12 @@ void uart_csb_init(){
 	 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_GPIOA, ENABLE);	//使能USART1，GPIOA时钟
   
-   
+   //USART1_TX   GPIOA.9
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9; //PA.9
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//复用推挽输出
+  GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.9
+	
   //USART1_RX	  GPIOA.10初始化
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;//PA10
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//浮空输入
@@ -92,5 +97,21 @@ u16 get_jianju()
 		}
 		return(min);
 	}
-		
-
+void fasong(u32 data)
+{
+	u8 t,i=0;
+	while(data>0)
+	{
+		t=data%10;
+		data=data/10;
+		USART_TX_BUF[i]=t+0x30;
+		i++;
+	}
+	for(;i>0;i--)
+	{
+		USART_SendData(USART1,USART_TX_BUF[i-1]);//向串口1发送数据
+		while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+	}
+	USART_SendData(USART1,32);//向串口1发送数据
+		while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+}

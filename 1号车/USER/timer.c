@@ -1,18 +1,19 @@
 #include "timer.h"
 #include "cesu_tim4_capture.h"	 
 #include "dianji_tim3_pwm.h"
+#include "csb_ceju_uart.h"
 
-#define INTERVAL 1800 //编码器转一圈花时500*0.002ms*100=100ms
-#define KP 0.0000001
+#define INTERVAL 2000 //编码器转一圈花时500*0.002ms*100=100ms
+#define KP 0.01
 #define KI 0.00
 #define KD -0.0
 
 extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
 int et=10,et_1=10,et_2=10;
 float sudu=110;//速度大小取值0~1000
-
+u16 countfa=0;
 //定时器1中断服务程序
-void TIM1_UP_IRQHandler(void)   //TIM3中断
+void TIM1_UP_IRQHandler(void)   //TIM1中断
 {
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否
 		{
@@ -20,10 +21,17 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		et_2=et_1;
 		et_1=et;
 		et=interval-INTERVAL ;
-		sudu=sudu+KP*(1*et-1*et_1+0*et_2);
-		if(sudu>800.0)sudu=800;
+		sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
+		if(sudu>100.0)sudu=100;
 		else if(sudu<0)sudu=0;
-		umotor((u32)100);
+		umotor((u32)sudu);
+			
+			countfa ++;
+			if(countfa ==1)
+			{
+				fasong(interval );
+				countfa =0;
+			}
 		}
 }
 
