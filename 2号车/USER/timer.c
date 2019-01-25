@@ -1,15 +1,18 @@
 #include "timer.h"
 #include "csb_ceju_uart.h"
 #include "dianji_tim3_pwm.h"
+#include "csb_ceju_uart.h"
 
 #define DISTANCE 600
 #define KP 0.5
 #define KI 0.00
 #define KD -0.0
 
+extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
 extern u16 jianju;
+extern u32 weiyi;
 int et=10,et_1=10,et_2=10;
-float sudu=150;//速度大小取值0~1000
+float sudu=110;//速度大小取值0~1000
 
 //定时器1中断服务程序
 void TIM1_UP_IRQHandler(void)   //TIM3中断
@@ -24,9 +27,18 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		//sudu=jianju;
 		sudu=KP*et+90;
 		if(sudu>105)sudu=105;
-		else if(sudu<30)sudu=30;
+		else if(sudu<80)sudu=80;
 			if(jianju==3440)sudu=110;
 		umotor((u32)sudu);
+			
+			//每多发一个都要降低TIM1中断周期
+				fasong(weiyi );
+				USART_SendData(USART1,32);//发空格
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+			
+				fasong(interval );
+				USART_SendData(USART1,59);//发分号
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 		}
 }
 

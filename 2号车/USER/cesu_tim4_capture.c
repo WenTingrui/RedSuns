@@ -49,44 +49,23 @@ void TIM4_Cap_Init(u16 arr,u16 psc)
 
 
 }
-
-u16 overflow=0;	//定时器溢出次数	    				
+   				
 u32 interval=0; 
-u32 interval_buffer=0;
-u8 buhuo=0;
+u32 weiyi=0;
 //定时器4中断服务程序	 
 void TIM4_IRQHandler(void)
 { 
 		if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)//发生更新事件
-		{	    	
-				if(overflow==100)//如果已经溢出50次，即0.5s未检测到捕获
-				{
-					interval=overflow*50000;
-					overflow=0;			//清空
+		{	    				
+					interval=50000;	
 					TIM_SetCounter(TIM4,0); 
-				}
-				else
-				{
-					overflow++;
-				}
 		}
 	if (TIM_GetITStatus(TIM4, TIM_IT_CC1) != RESET)//捕获1发生捕获事件
 		{	
-			if(buhuo==4)
-			{
-			interval=interval_buffer+overflow*50000+TIM_GetCapture1(TIM4);
-				overflow=0;			//清空
-				buhuo=0;
-				interval_buffer =0;
+			interval=TIM_GetCapture1(TIM4);
 				TIM_SetCounter(TIM4,0); 
-			}
-			else
-			{
-				buhuo++;
-				interval_buffer+=overflow*50000+TIM_GetCapture1(TIM4);
-				overflow=0;			//清空
-	 			TIM_SetCounter(TIM4,0); 
-			}
+			weiyi++;
+			if(weiyi==1000000000)weiyi=0;
 		}			     	    					   
  
     TIM_ClearITPendingBit(TIM4, TIM_IT_CC1|TIM_IT_Update); //清除中断标志位
