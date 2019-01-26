@@ -3,7 +3,7 @@
 #include "dianji_tim3_pwm.h"
 #include "csb_ceju_uart.h"
 
-#define DISTANCE 600
+#define DISTANCE 500
 #define KP 0.5
 #define KI 0.00
 #define KD -0.0
@@ -23,22 +23,23 @@ void TIM1_UP_IRQHandler(void)   //TIM3中断
 		et_2=et_1;
 		et_1=et;
 		et=jianju-DISTANCE ;
-		//sudu=sudu+KP*(1.1*et-1*et_1+0*et_2);
-		//sudu=jianju;
-		sudu=KP*et+90;
-		if(sudu>105)sudu=105;
-		else if(sudu<80)sudu=80;
-			if(jianju==3440)sudu=110;
+		if(jianju<DISTANCE +500)
+		{
+			sudu=KP*et+90;
+			if(sudu>120)sudu=120;
+			else if(sudu<95)sudu=95;
+		}
+		else sudu=120;
 		umotor((u32)sudu);
 			
 			//每多发一个都要降低TIM1中断周期
-				fasong(weiyi );
-				USART_SendData(USART1,32);//发空格
-				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
-			
-				fasong(interval );
-				USART_SendData(USART1,59);//发分号
-				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+//				fasong(weiyi );
+//				USART_SendData(USART1,32);//发空格
+//				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+//			
+//				fasong(interval );
+//				USART_SendData(USART1,59);//发分号
+//				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 		}
 }
 

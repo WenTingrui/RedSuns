@@ -55,12 +55,14 @@ int main(void)
 		left=y*500/200.0+550;
 		
 		//以下防止急弯判断反了
-		if(uin1<0.1)left=0;	if(uin3<0.1)left=1050;
-		if(uin1<0.1&&uin3<0.1)
+		if(uin1<0.2&&uin3<0.2)
 		{
-			if(uin4>uin5)left=1050;
-			else left=0;
+			if(uin4>uin5)left=0;
+			else left=1050;
 		}
+		else if(uin1<0.2&&uin3>0.2)left=0;
+		else if(uin1>0.2&&uin3<0.2)left=1050;
+		
 		
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
