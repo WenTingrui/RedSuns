@@ -9,11 +9,22 @@
 #include "cesu_tim4_capture.h"
 #include "csb_ceju_uart.h"
 #include "timer.h"
+#include "blueteeth_pid_uart.h"
 
 #define exp 2.718281828
+#define et_len 20
+
+float KP=5000.0;
+float KI=100.0;
+float KD=0.0 ;
+
+u32 heng;
+int sum_et=0;
+int eet[et_len]={0};
 
 int main(void)
  {	
+	 u32 k_temp=0;
 	u8 i;
 	 u16 uin4,uin5;
 	 float uin1,uin2,uin3,y,left,
@@ -35,11 +46,12 @@ int main(void)
 	delay_init();	    	 //延时函数初始化	  
 	 Adc_Init();
 	uart_csb_init();
- 	TIM3_PWM_Init(199,72-1);//电机	 
+ 	TIM3_PWM_Init(1999,7-1);//电机	 
 	 TIM2_PWM_Init(19999,72-1);//舵机	
 	  TIM4_Cap_Init(50000,9-1);	//以500khz即0.002ms的频率计数 ，一次计500下
 	TIM1_Int_Init(100-1,3840-1);//100Khz的计数频率，计数到10为0.1ms  
-		
+		blueteeth_pid_usart3_init();
+
    	while(1)
 	{			
 		uin1=(float)(Get_Adc_Average(ADC_Channel_0,3)/1000.0);
@@ -54,6 +66,10 @@ int main(void)
 		y=y*100.0; //mm级
 		left=y*500/200.0+550;
 		
+		//采集横向偏差
+		y=y*100+50000;
+		heng=y;
+		
 		//以下防止急弯判断反了
 		if(uin1<0.2&&uin3<0.2)
 		{
@@ -63,14 +79,59 @@ int main(void)
 		else if(uin1<0.2&&uin3>0.2)left=0;
 		else if(uin1>0.2&&uin3<0.2)left=1050;
 		
-		
+//		left=600;
 		//进入十字路口直走
 	  if(uin4>3103&&uin5>3103)left=500;
 		if(left<0)turnleft(0);
 		else if(left>1050)turnleft (1050);
 		else turnleft((u16)left);
 		
-		
+		//蓝牙PID参数调试
+		if(USART3_RX_STA&0x8000)
+		{	
+    USART_SendData(USART1,10);//发空格
+		while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+			k_temp =0;
+			
+			if(USART3_RX_BUF[0]=='p'&&USART3_RX_BUF[1]=='p'&&USART3_RX_BUF[(USART3_RX_STA&0x3fff)-1]=='n')
+			{
+				k_temp =0;
+				for(i=2;i<(USART3_RX_STA&0x3fff)-1;i++)
+				{
+					k_temp =k_temp *10+USART3_RX_BUF[i]-'0';
+				}
+				KP=k_temp ;
+//				fasong(KP);
+			}
+			else if(USART3_RX_BUF[0]=='i'&&USART3_RX_BUF[1]=='i'&&USART3_RX_BUF[(USART3_RX_STA&0x3fff)-1]=='n')
+			{
+				k_temp =0;
+				for(i=2;i<(USART3_RX_STA&0x3fff)-1;i++)
+				{
+					k_temp =k_temp *10+USART3_RX_BUF[i]-'0';
+				}
+				KI=k_temp ;
+//				fasong(KI);
+			}
+			else if(USART3_RX_BUF[0]=='d'&&USART3_RX_BUF[1]=='d'&&USART3_RX_BUF[(USART3_RX_STA&0x3fff)-1]=='n')
+			{
+				k_temp =0;
+				for(i=2;i<(USART3_RX_STA&0x3fff)-1;i++)
+				{
+					k_temp =k_temp *10+USART3_RX_BUF[i]-'0';
+				}
+				KD=k_temp ;
+//				fasong(KD);
+			}
+//			KP=100;
+//			USART_SendData(USART1,10);//发空格
+//			while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+//			fasong(111111);
+//			USART_SendData(USART1,10);//发空格
+//			while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+			USART3_RX_STA=0;
+			TIM_Cmd(TIM1, ENABLE);
+		}
 	}	 
  }
 

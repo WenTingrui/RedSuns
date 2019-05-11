@@ -100,6 +100,10 @@ u16 get_jianju()
 void fasong(u32 data)
 {
 	u8 t,i=0;
+	if(data==0){USART_SendData(USART1,'0');//向串口1发送数据
+		while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);
+	}//等待发送结束
+	
 	while(data>0)
 	{
 		t=data%10;
@@ -112,4 +116,6 @@ void fasong(u32 data)
 		USART_SendData(USART1,USART_TX_BUF[i-1]);//向串口1发送数据
 		while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 	}
+	
+	
 }

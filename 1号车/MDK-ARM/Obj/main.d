@@ -38,3 +38,4 @@
 .\obj\main.o: ..\USER\csb_ceju_uart.h
 .\obj\main.o: F:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\obj\main.o: ..\USER\timer.h
+.\obj\main.o: ..\USER\blueteeth_pid_uart.h

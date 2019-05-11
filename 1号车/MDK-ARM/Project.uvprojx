@@ -453,6 +453,11 @@
               <FileType>1</FileType>
               <FilePath>..\USER\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>blueteeth_pid_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\blueteeth_pid_uart.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

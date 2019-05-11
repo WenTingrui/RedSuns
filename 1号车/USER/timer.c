@@ -4,35 +4,56 @@
 #include "csb_ceju_uart.h"
 
 #define INTERVAL 2000 //编码器转一圈花时500*0.002ms*100=100ms
-#define KP 0.01
-#define KI 0.1     //  T/Ti
-#define KD 0       //  Td/T
+
+extern float KP;
+extern float KI;
+extern float KD;
 
 extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
 extern u32 weiyi;
+extern u32 heng;
+extern int sum_et;
+extern int eet[];
+int et_len=20;
+u8 ii;
 int et=10,et_1=10,et_2=10;
-float sudu=110;//速度大小取值0~1000
+float umotor=0;//电机输出量大小取值0~2000
 
 //定时器1中断服务程序
+
 void TIM1_UP_IRQHandler(void)   //TIM1中断
 {
 	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否
 		{
 		TIM_ClearITPendingBit(TIM1, TIM_IT_Update  );  //清除TIMx更新中断标志 
+	  
+		//上一时刻与上上时刻的偏差et值
 		et_2=et_1;
 		et_1=et;
-		et=interval-INTERVAL ;
-		sudu=sudu+KP*((1+KI+KD)*et-(1+2*KD)*et_1+KD*et_2);
-		if(sudu>200.0)sudu=200;
-		else if(sudu<0)sudu=0;
-		umotor((u32)sudu);
+		
+		sum_et=sum_et-eet[0]+interval-INTERVAL;
+		et=sum_et/et_len;
+		for(ii=0;ii<(et_len-1);ii++)
+		{
+			eet[ii]=eet[ii+1];
+		}
+		eet[et_len-1]=interval-INTERVAL;
+		
+		//增量式PID控制
+		umotor=umotor+((KP+KI+KD)*et-(KP+2*KD)*et_1+KD*et_2)/1000000.0;
+		
+		if(umotor>1000.0)umotor=1000;
+		else if(umotor<0)umotor=0;
+		u_motor((u32)umotor);
 			
 			//每多发一个都要降低TIM1中断周期
-				fasong(weiyi );
+//				fasong(umotor );
+	     	fasong(weiyi );
 				USART_SendData(USART1,32);//发空格
 				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 			
-				fasong(interval );
+//				fasong((u32)et+2000000000 );
+		    fasong(interval);
 				USART_SendData(USART1,59);//发分号
 				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 		}
@@ -59,7 +80,7 @@ void TIM1_Int_Init(u16 arr,u16 psc)
 
 	//中断优先级NVIC设置
 	NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_IRQn;  //TIM1中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;  //先占优先级0级
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //先占优先级0级
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能
 	NVIC_Init(&NVIC_InitStructure);  //初始化NVIC寄存器

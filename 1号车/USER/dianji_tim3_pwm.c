@@ -1,9 +1,9 @@
  #include "dianji_tim3_pwm.h"
 
 
-void umotor(u32 spe)
+void u_motor(u32 spe)
 {
-	TIM_SetCompare2(TIM3,(u32)spe*0.2);
+	TIM_SetCompare2(TIM3,(u32)spe);
 }
 
 //定时器3中断服务程序（电机）

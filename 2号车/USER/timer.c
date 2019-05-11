@@ -4,42 +4,45 @@
 #include "csb_ceju_uart.h"
 
 #define DISTANCE 500
-#define KP 0.5
+#define KP 0.05
 #define KI 0.00
 #define KD -0.0
 
 extern  u32 interval;//编码器产生一个脉冲内所计个数，计一个数为0.02ms
 extern u16 jianju;
 extern u32 weiyi;
+extern u32 heng;
 int et=10,et_1=10,et_2=10;
-float sudu=110;//速度大小取值0~1000
+float umotor=170;//速度大小取值0~1000
 
 //定时器1中断服务程序
-void TIM1_UP_IRQHandler(void)   //TIM3中断
+void TIM1_UP_IRQHandler(void)   //TIM1中断
 {
-	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否
+	if (TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)  //检查TIM1更新中断发生与否
 		{
-		TIM_ClearITPendingBit(TIM1, TIM_IT_Update  );  //清除TIMx更新中断标志 
+		TIM_ClearITPendingBit(TIM1, TIM_IT_Update  );  //清除TIM1更新中断标志 
 		et_2=et_1;
 		et_1=et;
 		et=jianju-DISTANCE ;
 		if(jianju<DISTANCE +500)
 		{
-			sudu=KP*et+90;
-			if(sudu>120)sudu=120;
-			else if(sudu<95)sudu=95;
+			umotor=KP*et+180;
+			if(umotor>500)umotor=500;
+			else if(umotor<95)umotor=95;
 		}
-		else sudu=120;
-		umotor((u32)sudu);
+		else umotor=200;
+		u_motor((u32)umotor );
 			
 			//每多发一个都要降低TIM1中断周期
 //				fasong(weiyi );
-//				USART_SendData(USART1,32);//发空格
-//				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
-//			
-//				fasong(interval );
-//				USART_SendData(USART1,59);//发分号
-//				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+	    	fasong(weiyi);
+				USART_SendData(USART1,32);//发空格
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
+			
+//				fasong(jianju );
+				fasong(interval);
+				USART_SendData(USART1,59);//发分号
+				while(USART_GetFlagStatus(USART1,USART_FLAG_TC)!=SET);//等待发送结束
 		}
 }
 

@@ -2,7 +2,7 @@
 #define __DIANJI_TIM3_PWM_H
 #include "sys.h"
  
-void umotor(u32 spe);
+void u_motor(u32 spe);
 void TIM3_PWM_Init(u16 arr,u16 psc);
  
 #endif 
